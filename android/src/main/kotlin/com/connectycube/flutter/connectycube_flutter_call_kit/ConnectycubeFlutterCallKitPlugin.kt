@@ -23,6 +23,9 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry
 
+import android.content.ContentValues.TAG
+import android.util.Log
+
 
 /** ConnectycubeFlutterCallKitPlugin */
 @Keep
@@ -265,9 +268,7 @@ class ConnectycubeFlutterCallKitPlugin : FlutterPlugin, MethodCallHandler,
 
                 channel.invokeMethod("onCallAccepted", parameters)
 
-                val launchIntent = getLaunchIntent(context!!)
-                launchIntent?.action = ACTION_CALL_ACCEPT
-                context.startActivity(launchIntent)
+                backToForeground(context)
             }
         }
     }
@@ -369,5 +370,30 @@ class ConnectycubeFlutterCallKitPlugin : FlutterPlugin, MethodCallHandler,
         bundle.putString(EXTRA_CALL_ID, sessionId)
         broadcastIntent.putExtras(bundle)
         localBroadcastManager.sendBroadcast(broadcastIntent)
+    }
+
+    private fun backToForeground(context: Context?) {
+        if (context == null) return
+
+        val packageName = context.packageName
+        val focusIntent = context.packageManager.getLaunchIntentForPackage(packageName)!!
+            .cloneFilter()
+        val activity = mainActivity
+        val isOpened = activity != null
+        Log.d(TAG, "backToForeground, app isOpened ?" + if (isOpened) "true" else "false")
+        if (isOpened) {
+            focusIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+            focusIntent.action = ACTION_CALL_ACCEPT
+
+            activity?.startActivity(focusIntent)
+        } else {
+            focusIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            focusIntent.action = ACTION_CALL_ACCEPT
+            if (activity != null) {
+                activity.startActivity(focusIntent)
+            } else {
+                context.startActivity(focusIntent)
+            }
+        }
     }
 }
