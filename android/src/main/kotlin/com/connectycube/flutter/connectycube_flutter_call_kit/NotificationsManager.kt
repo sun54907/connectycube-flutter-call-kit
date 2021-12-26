@@ -22,10 +22,14 @@ import com.connectycube.flutter.connectycube_flutter_call_kit.utils.getString
 const val CALL_CHANNEL_ID = "calls_channel_id"
 const val CALL_CHANNEL_NAME = "Calls"
 
-
 fun cancelCallNotification(context: Context, callId: String) {
     val notificationManager = NotificationManagerCompat.from(context)
     notificationManager.cancel(callId.hashCode())
+}
+
+fun cancelAllNotifications(context: Context) {
+    val notificationManager = NotificationManagerCompat.from(context)
+    notificationManager.cancelAll()
 }
 
 fun showCallNotification(

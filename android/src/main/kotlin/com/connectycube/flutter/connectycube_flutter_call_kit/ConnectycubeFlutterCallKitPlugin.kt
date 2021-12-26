@@ -288,6 +288,15 @@ class ConnectycubeFlutterCallKitPlugin : FlutterPlugin, MethodCallHandler,
                 }
             }
 
+            "cancelAllNotifications" -> {
+                try {
+                    cancelAllNotifications(applicationContext!!)
+                    result.success(null)
+                } catch (e: Exception) {
+                    result.error("ERROR", e.message, "")
+                }
+            }
+
             else ->
                 result.notImplemented()
 
