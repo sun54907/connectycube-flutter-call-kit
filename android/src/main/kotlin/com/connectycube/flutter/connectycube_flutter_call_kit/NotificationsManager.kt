@@ -57,8 +57,7 @@ fun showCallNotification(
 
     Log.d("NotificationsManager", "ringtone 2 $ringtone")
 
-    val callTypeTitle =
-        String.format(CALL_TYPE_PLACEHOLDER, if (callType == 1) "Video" else "Audio")
+    val callTypeTitle = context.getString(if (callType == 1) R.string.incoming_video else R.string.incoming_audio)
 
     val builder: NotificationCompat.Builder =
         createCallNotification(context, callInitiatorName, callTypeTitle, pendingIntent, ringtone)
@@ -180,7 +179,7 @@ fun addCallRejectAction(
             "drawable",
             context.packageName
         ),
-        getColorizedText("Reject", "#E02B00"),
+        getColorizedText(context.getString(R.string.btn_reject), "#E02B00"),
         declinePendingIntent
     )
         .build()
@@ -216,7 +215,7 @@ fun addCallAcceptAction(
     )
     val acceptAction: NotificationCompat.Action = NotificationCompat.Action.Builder(
         context.resources.getIdentifier("ic_menu_call", "drawable", context.packageName),
-        getColorizedText("Accept", "#4CB050"),
+        getColorizedText(context.getString(R.string.btn_accept), "#4CB050"),
         acceptPendingIntent
     )
         .build()

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="incoming_audio">Incoming Audio call</string>
+    <string name="incoming_video">Incoming Video call</string>
+    <string name="btn_accept">Accept</string>
+    <string name="btn_reject">Reject</string>
     <style name="LaunchTheme" parent="@android:style/Theme.Black.NoTitleBar">
         <!-- Show a splash screen on the activity. Automatically removed when
              Flutter draws its first frame -->
