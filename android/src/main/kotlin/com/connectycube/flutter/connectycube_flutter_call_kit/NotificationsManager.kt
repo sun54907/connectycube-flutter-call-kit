@@ -40,7 +40,7 @@ fun showCallNotification(
         context,
         callId.hashCode(),
         intent,
-        PendingIntent.FLAG_UPDATE_CURRENT
+        pendingIntentFlag()
     )
 
     var ringtone: Uri
@@ -170,7 +170,7 @@ fun addCallRejectAction(
         Intent(context, EventReceiver::class.java)
             .setAction(ACTION_CALL_REJECT)
             .putExtras(bundle),
-        PendingIntent.FLAG_UPDATE_CURRENT
+            pendingIntentFlag()
     )
     val declineAction: NotificationCompat.Action = NotificationCompat.Action.Builder(
         context.resources.getIdentifier(
@@ -210,7 +210,7 @@ fun addCallAcceptAction(
         Intent(context, EventReceiver::class.java)
             .setAction(ACTION_CALL_ACCEPT)
             .putExtras(bundle),
-        PendingIntent.FLAG_UPDATE_CURRENT
+            pendingIntentFlag()
     )
     val acceptAction: NotificationCompat.Action = NotificationCompat.Action.Builder(
         context.resources.getIdentifier("ic_menu_call", "drawable", context.packageName),
@@ -244,7 +244,7 @@ fun addCallFullScreenIntent(
         context,
         callId.hashCode(),
         callFullScreenIntent,
-        PendingIntent.FLAG_UPDATE_CURRENT
+            pendingIntentFlag()
     )
     notificationBuilder.setFullScreenIntent(fullScreenPendingIntent, true)
 }
@@ -271,7 +271,7 @@ fun addCancelCallNotificationIntent(
         Intent(appContext, EventReceiver::class.java)
             .setAction(ACTION_CALL_NOTIFICATION_CANCELED)
             .putExtras(bundle),
-        PendingIntent.FLAG_UPDATE_CURRENT
+            pendingIntentFlag()
     )
     notificationBuilder.setDeleteIntent(deleteCallNotificationPendingIntent)
 }
@@ -322,4 +322,11 @@ fun setNotificationColor(context: Context, notificationBuilder: NotificationComp
             }
         }
     }
+}
+
+private fun pendingIntentFlag() : Int {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        return PendingIntent.FLAG_IMMUTABLE
+    }
+    return PendingIntent.FLAG_UPDATE_CURRENT
 }
