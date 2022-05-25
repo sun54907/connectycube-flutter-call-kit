@@ -125,8 +125,7 @@ class IncomingCallActivity : Activity() {
         callTitleTxt.text = callInitiatorName
         val callSubTitleTxt: TextView =
             findViewById(resources.getIdentifier("call_type_txt", "id", packageName))
-        callSubTitleTxt.text =
-            String.format(CALL_TYPE_PLACEHOLDER, if (callType == 1) "Video" else "Audio")
+        callSubTitleTxt.text = getString(if (callType == 1) R.string.incoming_video else R.string.incoming_audio)
         val avatarImg: ImageView =
             findViewById(resources.getIdentifier("avatar_img", "id", packageName))
 
