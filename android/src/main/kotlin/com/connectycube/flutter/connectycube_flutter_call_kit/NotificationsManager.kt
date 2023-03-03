@@ -22,10 +22,14 @@ import com.connectycube.flutter.connectycube_flutter_call_kit.utils.getString
 const val CALL_CHANNEL_ID = "calls_channel_id"
 const val CALL_CHANNEL_NAME = "Calls"
 
-
 fun cancelCallNotification(context: Context, callId: String) {
     val notificationManager = NotificationManagerCompat.from(context)
     notificationManager.cancel(callId.hashCode())
+}
+
+fun cancelAllNotifications(context: Context) {
+    val notificationManager = NotificationManagerCompat.from(context)
+    notificationManager.cancelAll()
 }
 
 fun showCallNotification(
@@ -57,8 +61,7 @@ fun showCallNotification(
 
     Log.d("NotificationsManager", "ringtone 2 $ringtone")
 
-    val callTypeTitle =
-        String.format(CALL_TYPE_PLACEHOLDER, if (callType == 1) "Video" else "Audio")
+    val callTypeTitle = context.getString(if (callType == 1) R.string.incoming_video else R.string.incoming_audio)
 
     val builder: NotificationCompat.Builder =
         createCallNotification(context, callInitiatorName, callTypeTitle, pendingIntent, ringtone)
@@ -144,7 +147,6 @@ fun createCallNotification(
         .setContentIntent(pendingIntent)
         .setSound(ringtone)
         .setPriority(NotificationCompat.PRIORITY_MAX)
-        .setTimeoutAfter(60000)
     return notificationBuilder
 }
 
@@ -180,7 +182,7 @@ fun addCallRejectAction(
             "drawable",
             context.packageName
         ),
-        getColorizedText("Reject", "#E02B00"),
+        getColorizedText(context.getString(R.string.btn_reject), "#E02B00"),
         declinePendingIntent
     )
         .build()
@@ -216,7 +218,7 @@ fun addCallAcceptAction(
     )
     val acceptAction: NotificationCompat.Action = NotificationCompat.Action.Builder(
         context.resources.getIdentifier("ic_menu_call", "drawable", context.packageName),
-        getColorizedText("Accept", "#4CB050"),
+        getColorizedText(context.getString(R.string.btn_accept), "#4CB050"),
         acceptPendingIntent
     )
         .build()
