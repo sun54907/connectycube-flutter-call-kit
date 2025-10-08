@@ -36,6 +36,11 @@ fun cancelCallNotification(context: Context, callId: String) {
     notificationManager.cancel(callId.hashCode())
 }
 
+fun cancelAllNotifications(context: Context) {
+    val notificationManager = NotificationManagerCompat.from(context)
+    notificationManager.cancelAll()
+}
+
 fun showCallNotification(
     context: Context, callId: String, callType: Int, callInitiatorId: Int,
     callInitiatorName: String, callOpponents: ArrayList<Int>, callPhoto: String?, userInfo: String
@@ -227,7 +232,6 @@ fun createCallNotification(
         .setContentIntent(pendingIntent)
         .setSound(ringtone)
         .setPriority(NotificationCompat.PRIORITY_MAX)
-        .setTimeoutAfter(60000)
     return notificationBuilder
 }
 
